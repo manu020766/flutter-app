@@ -14,20 +14,28 @@ class LocationList extends StatelessWidget {
       appBar: AppBar(title: Text("Locations", style: Styles.navBarTitle)),
       body: ListView.builder(
         itemCount: _locations.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            contentPadding: EdgeInsets.all(10.0),
-            leading: _itemThumbnail(_locations[index]),
-            title: _itemTitle(_locations[index]),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder:  (context) => LocationDetail(_locations[index]),
-              ));
-            },
-          );
-        }),
+        itemBuilder: _listViewItemBuilder,
+      ),
     );
   }
+
+  Widget _listViewItemBuilder(BuildContext context, int index) {
+    var location = _locations[index];
+    return ListTile(
+      contentPadding: EdgeInsets.all(10.0),
+      leading: _itemThumbnail(location),
+      title: _itemTitle(location),
+      onTap: () => _navigationToLocationDetail(context, location),
+    );
+  }
+}
+
+void _navigationToLocationDetail(BuildContext context, Location location) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationDetail(location),
+      ));
 }
 
 Widget _itemThumbnail(Location location) {
@@ -40,5 +48,3 @@ Widget _itemThumbnail(Location location) {
 Widget _itemTitle(Location location) {
   return Text(location.name, style: Styles.textDefault);
 }
-
-
